@@ -42,13 +42,15 @@ for i in range(len(folders)):
     nb_dims = nb_dims(dataset)
 
 
-    nb_timesteps = int(x_train.shape[1] / nb_dims)
-    input_shape = (nb_timesteps , nb_dims)
+
 
     data, labels = get_data(dataset, '\t')
     labels = class_offset(labels, dataset)
     x_train, x_rem, y_train, y_rem = train_test_split(data,labels, train_size=0.8)
     x_val, x_test, y_val, y_test = train_test_split(x_rem,y_rem, test_size=0.5)
+
+    nb_timesteps = int(x_train.shape[1] / nb_dims)
+    input_shape = (nb_timesteps , nb_dims)
 
 
 
