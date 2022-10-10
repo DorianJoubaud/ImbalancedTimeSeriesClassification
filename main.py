@@ -38,6 +38,13 @@ for i in range(len(folders)):
     print(dataset)
     print(f'{i}/{len(folders)}')
 
+    nb_class = nb_classes(dataset)
+    nb_dims = nb_dims(dataset)
+
+
+    nb_timesteps = int(x_train.shape[1] / nb_dims)
+    input_shape = (nb_timesteps , nb_dims)
+
     data, labels = get_data(dataset, '\t')
     labels = class_offset(labels, dataset)
     x_train, x_rem, y_train, y_rem = train_test_split(data,labels, train_size=0.8)
