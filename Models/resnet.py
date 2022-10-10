@@ -133,6 +133,6 @@ class RESNET:
         return [hist, duration]
 
   # Prediction
-  def predict(self, x_test, y_test, return_df_metrics=True):
+  def predict(self, x_test):
       # Return array with each class prediction (not in One hot encoding)
       return np.argmax(self.model.predict(x_test), axis = 1)
