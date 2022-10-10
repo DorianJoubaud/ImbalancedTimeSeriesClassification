@@ -58,7 +58,7 @@ for i in range(len(folders)):
 
     x_test = x_test.reshape((-1, input_shape[0], input_shape[1]))
     x_train = x_train.reshape((-1, input_shape[0], input_shape[1]))
-    y_test = to_categorical(ds.class_offset(y_test, dataset), nb_class)
+    y_test = to_categorical(class_offset(y_test, dataset), nb_class)
 
     _, rat = np.unique(y_train, return_counts=True)
     majority_class = np.argmax(rat)
