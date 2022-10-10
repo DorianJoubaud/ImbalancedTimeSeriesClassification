@@ -61,12 +61,13 @@ def min_classes(d, e):
         """
         return len(d[d < e])
 
-def raw_data(dataset, x_train, y_train, x_test, y_test, input_shape, nb_classes):
+def raw_data(dataset, x_train, y_train, x_train, y_train, x_test, y_test, input_shape, nb_classes):
     model = RESNET('resnet/Raw/'+dataset, input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
     model.compile()
     y_raw = to_categorical(ds.class_offset(y_train, dataset), nb_classes)
-    model.fit(x_train, y_raw)
+
+    model.fit(x_train, y_raw, x_val, to_categorical(ds.class_offset(y_val, dataset), nb_classes))
     y_pred = model.predict(x_test)
 
     f = f1_score(y_test, y_pred, average = None).tolist()

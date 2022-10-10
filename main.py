@@ -1,6 +1,6 @@
 
-from utils.input_data import read_data_sets
-import utils.datasets as ds
+
+from utils import *
 from tensorflow.keras.utils import to_categorical
 from functions import *
 from Models.resnet import RESNET
@@ -37,27 +37,15 @@ for i in range(len(folders)):
     print(dataset)
     print(f'{i}/{len(folders)}')
 
-    #load data
-    nb_class = ds.nb_classes(dataset)
-    nb_dims = ds.nb_dims(dataset)
-    train_data_file = os.path.join("data/", dataset, "%s_TRAIN.tsv"%dataset)
-    test_data_file = os.path.join("data/", dataset, "%s_TEST.tsv"%dataset)
+    data, labels = get_data(dataset, '\t')
+    labels = class_offset(labels, dataset)
+    x_train, x_rem, y_train, y_rem = train_test_split(data,labels, train_size=0.8)
+    x_val, x_test, y_val, y_test = train_test_split(x_rem,y_rem, test_size=0.5)
 
-    x_train, y_train, x_test, y_test = read_data_sets(train_data_file, "", test_data_file, "", delimiter="\t")
 
-    y_train = ds.class_offset(y_train, dataset)
-    y_test= ds.class_offset(y_test, dataset)
-    nb_timesteps = int(x_train.shape[1] / nb_dims)
-    input_shape = (nb_timesteps , nb_dims)
 
-    x_train_max = np.max(x_train)
-    x_train_min = np.min(x_train)
-    #normalise in [-1;1]
-    x_train = 2. * (x_train - x_train_min) / (x_train_max - x_train_min) - 1.
-    x_test = 2. * (x_test - x_train_min) / (x_train_max - x_train_min) - 1.
 
-    nb_timesteps = int(x_train.shape[1] / nb_dims)
-    input_shape = (nb_timesteps , nb_dims)
+
     x_test = x_test.reshape((-1, input_shape[0], input_shape[1]))
     x_train = x_train.reshape((-1, input_shape[0], input_shape[1]))
     y_test = to_categorical(ds.class_offset(y_test, dataset), nb_class)
@@ -91,7 +79,7 @@ for i in range(len(folders)):
     g = np.array([0.0 for cl in range(nb_class)])
 
     for i in range(3):
-        taccu,tmcc, tf, trec, tpres, tg = raw_data(dataset, x_train, y_train, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
+        taccu,tmcc, tf, trec, tpres, tg = raw_data(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
 
         accu += taccu
         mcc += tmcc
