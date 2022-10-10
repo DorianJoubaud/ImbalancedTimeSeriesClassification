@@ -61,7 +61,7 @@ def min_classes(d, e):
         """
         return len(d[d < e])
 
-def raw_data(dataset, x_train, y_train, x_train, y_train, x_test, y_test, input_shape, nb_classes):
+def raw_data(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes):
     model = RESNET('resnet/Raw/'+dataset, input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
     model.compile()
