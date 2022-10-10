@@ -5,9 +5,10 @@ from scipy.interpolate import CubicSpline
 from imblearn.over_sampling import SMOTE
 from imblearn.over_sampling import ADASYN
 from Models.resnet import *
-import utils.datasets as ds
+from utils import *
 from tensorflow.keras.utils import to_categorical
 import random
+
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from imblearn.over_sampling import SMOTE
@@ -65,9 +66,9 @@ def raw_data(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     model = RESNET('resnet/Raw/'+dataset, input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
     model.compile()
-    y_raw = to_categorical(ds.class_offset(y_train, dataset), nb_classes)
+    y_raw = to_categorical(class_offset(y_train, dataset), nb_classes)
 
-    model.fit(x_train, y_raw, x_val, to_categorical(ds.class_offset(y_val, dataset), nb_classes))
+    model.fit(x_train, y_raw, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
     y_pred = model.predict(x_test)
 
     f = f1_score(y_test, y_pred, average = None).tolist()
@@ -86,7 +87,7 @@ def ROS_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classe
     X_over, y_over = oversample.fit_resample(x_train[:,:,0], y_train)
     model = RESNET('resnet/ROS/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    y_over = to_categorical(ds.class_offset(y_over, dataset), nb_classes)
+    y_over = to_categorical( class_offset(y_over, dataset), nb_classes)
     model.fit(X_over, y_over)
 
 
@@ -164,10 +165,10 @@ def jitter_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_cla
     oversamp = np.concatenate((x_train,aug), axis = 0)
 
     oversamp_labels = np.concatenate((y_train,aug_labels), axis = 0)
-    oversamp_labels = to_categorical(ds.class_offset(oversamp_labels, dataset), nb_classes)
+    oversamp_labels = to_categorical( class_offset(oversamp_labels, dataset), nb_classes)
     model = RESNET('resnet/Jitter/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    y_over = to_categorical(ds.class_offset(aug_labels, dataset), nb_classes)
+    y_over = to_categorical( class_offset(aug_labels, dataset), nb_classes)
     model.fit(aug, y_over)
 
 
@@ -249,10 +250,10 @@ def tw_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes
     oversamp = np.concatenate((x_train,aug), axis = 0)
 
     oversamp_labels = np.concatenate((y_train,aug_labels), axis = 0)
-    oversamp_labels = to_categorical(ds.class_offset(oversamp_labels, dataset), nb_classes)
+    oversamp_labels = to_categorical( class_offset(oversamp_labels, dataset), nb_classes)
     model = RESNET('resnet/TW/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    y_over = to_categorical(ds.class_offset(aug_labels, dataset), nb_classes)
+    y_over = to_categorical( class_offset(aug_labels, dataset), nb_classes)
     model.fit(aug, y_over)
 
 
@@ -284,7 +285,7 @@ def SMOTE_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_clas
 
      model = RESNET('resnet/SMOTE', input_shape, nb_classes, False)
      model.build_model(input_shape, nb_classes)
-     y_over = to_categorical(ds.class_offset(yo, dataset), nb_classes)
+     y_over = to_categorical( class_offset(yo, dataset), nb_classes)
      model.fit(Xo, y_over)
      y_pred = model.predict(x_test)
 
@@ -315,7 +316,7 @@ def ADASYN_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_cla
 
      model = RESNET('resnet/ADASYN/', input_shape, nb_classes, False)
      model.build_model(input_shape, nb_classes)
-     y_over = to_categorical(ds.class_offset(yo, dataset), nb_classes)
+     y_over = to_categorical( class_offset(yo, dataset), nb_classes)
      model.fit(Xo, y_over)
      y_pred = model.predict(x_test)
 
