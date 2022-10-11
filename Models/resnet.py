@@ -120,7 +120,7 @@ class RESNET:
 
 
 
-        self.callbacks = [tf.keras.callbacks.LearningRateScheduler(reduce_lr), tf.keras.callbacks.LearningRateScheduler(self.lr_scheduler)]
+        self.callbacks = [reduce_lr, tf.keras.callbacks.LearningRateScheduler(self.lr_scheduler)]
         print('=== Compiled ===')
 
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
