@@ -68,7 +68,7 @@ def raw_data(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     model.compile()
     y_raw = to_categorical(class_offset(y_train, dataset), nb_classes)
 
-    model.fit(x_train, y_raw, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
+    histo = model.fit(x_train, y_raw, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
     y_pred = model.predict(x_test)
 
     f = f1_score(y_test, y_pred, average = None).tolist()
@@ -77,7 +77,7 @@ def raw_data(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     rec = recall_score(y_test, y_pred, average=None).tolist()
     pres = precision_score(y_test, y_pred, average=None).tolist()
     g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-    return accu, mcc, f, rec, pres, g
+    return accu, mcc, f, rec, pres, g, histo
 
 
 def ROS_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes, sp_str):
