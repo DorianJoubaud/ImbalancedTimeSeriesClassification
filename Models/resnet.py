@@ -105,7 +105,7 @@ class RESNET:
 
 
 
-        self.callbacks = [reduce_lr]
+        self.callbacks = reduce_lr
 
         print('=== Compiled ===')
 
@@ -137,7 +137,7 @@ class RESNET:
       }
 
         hist = self.model.fit(x_train, y_train, batch_size=mini_batch_size, epochs=nb_epochs,
-                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=[WandbCallback()])
+                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=[WandbCallback(), self.callbacks])
 
         duration = time.time() - start_time
         print(f'=== Fitted in {duration} secondes')
