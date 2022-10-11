@@ -88,8 +88,8 @@ for i in range(len(folders)):
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
 
-    for i in range(3):
-        taccu,tmcc, tf, trec, tpres, tg = raw_data(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
+    for i in range(1):
+        taccu,tmcc, tf, trec, tpres, tg, histo = raw_data(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
 
         accu += taccu
         mcc += tmcc
@@ -99,12 +99,12 @@ for i in range(len(folders)):
         pres += tpres
         g += tg
 
-    evolutionf.append(f/3) # f1 scores
-    evolutiong.append(g/3) #g means
-    evolutiona.append(accu/3) #accuracy
-    evolutionmcc.append(mcc/3) #mcc
-    evolutionrec.append(rec/3) #precision
-    evolutionpres.append(pres/3) #recall
+    evolutionf.append(f/1) # f1 scores
+    evolutiong.append(g/1) #g means
+    evolutiona.append(accu/1) #accuracy
+    evolutionmcc.append(mcc/1) #mcc
+    evolutionrec.append(rec/1) #precision
+    evolutionpres.append(pres/1) #recall
 
     """     #ROS
 
@@ -269,6 +269,11 @@ os.makedirs('Results/F1_scores', exist_ok=True)
 os.makedirs('Results/G_scores', exist_ok=True)
 os.makedirs('Results/Precision', exist_ok=True)
 os.makedirs('Results/Recall', exist_ok=True)
+os.makedirs('Results/Historic', exist_ok=True)
+
+
+hist = pd.DataFrame(histo)
+hist.to_csv('Results/Historic/hist.csv')
 
 
 acc = pd.DataFrame(accuracy)

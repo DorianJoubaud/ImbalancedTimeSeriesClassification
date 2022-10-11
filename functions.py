@@ -88,7 +88,7 @@ def ROS_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classe
     model = RESNET('resnet/ROS/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
     y_over = to_categorical( class_offset(y_over, dataset), nb_classes)
-    model.fit(X_over, y_over)
+    histo = model.fit(X_over, y_over)
 
 
 
@@ -100,7 +100,7 @@ def ROS_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classe
     rec = recall_score(y_test, y_pred, average=None).tolist()
     pres = precision_score(y_test, y_pred, average=None).tolist()
     g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-    return accu, mcc, f, rec, pres, g
+    return accu, mcc, f, rec, pres, g, histo
 
 
 
