@@ -109,7 +109,7 @@ class RESNET:
 
         print('=== Compiled ===')
 
-        wandb.login("89972c25af0c49a4e2e1b8663778daedd960634a")
+        wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
         wandb.init(project="ImbalanceClassification", entity="djbd")
         #wandb.run.name = f"MPPO_{dateenv}_{wandb.run.id}"
 
