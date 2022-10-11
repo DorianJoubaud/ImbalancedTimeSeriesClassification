@@ -2,6 +2,8 @@ import tensorflow.keras as keras
 import tensorflow as tf
 import numpy as np
 import time
+import wandb
+from wandb.keras import WandbCallback
 
 
 
@@ -107,6 +109,12 @@ class RESNET:
 
         print('=== Compiled ===')
 
+        wandb.login("89972c25af0c49a4e2e1b8663778daedd960634a")
+        wandb.init(project="ImbalanceClassification", entity="djbd")
+        #wandb.run.name = f"MPPO_{dateenv}_{wandb.run.id}"
+
+        print('=== Connected to wandb ===')
+
   # fit model
   def fit(self, x_train, y_train, x_val, y_val):
         #Test for GPU avaible, if not return error
@@ -117,14 +125,22 @@ class RESNET:
         batch_size = 64
         nb_epochs = 1500
 
+
         mini_batch_size = int(min(x_train.shape[0] / 10, batch_size))
 
         start_time = time.time()
 
+        wandb.config = {
+            "learning_rate": 0.001,
+            "epochs": nb_epochs,
+            "batch_size": mini_batch_size
+      }
+
         hist = self.model.fit(x_train, y_train, batch_size=mini_batch_size, epochs=nb_epochs,
-                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=self.callbacks)
+                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=[WandbCallback()])
 
         duration = time.time() - start_time
+        print(f'=== Fitted in {duration} secondes')
 
         self.model.save(self.output_directory + 'ResNet_weights.hdf5')
 
