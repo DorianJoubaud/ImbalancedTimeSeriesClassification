@@ -107,7 +107,7 @@ class RESNET:
     wandb.log({'learning_rate': lr}, commit=False)
 
 
-    return lr
+    return float(lr)
 
 
 
