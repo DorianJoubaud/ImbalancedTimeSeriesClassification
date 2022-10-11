@@ -106,10 +106,8 @@ class RESNET:
 
     wandb.log({'learning_rate': lr}, commit=False)
 
-    if epoch < 7:
-        return lr
-    else:
-        return lr * tf.math.exp(0.01)
+
+    return lr * tf.math.exp(0.01)
 
 
 
