@@ -107,7 +107,7 @@ class RESNET:
     wandb.log({'learning_rate': lr}, commit=False)
 
 
-    return lr * tf.math.exp(0.01)
+    return lr
 
 
 
@@ -153,7 +153,7 @@ class RESNET:
       }
 
         hist = self.model.fit(x_train, y_train, batch_size=mini_batch_size, epochs=nb_epochs,
-                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=[WandbCallback(), self.callbacks[1]])
+                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=[WandbCallback(), self.callbacks[0], self.callbacks[1]])
 
         duration = time.time() - start_time
         print(f'=== Fitted in {duration} secondes')
