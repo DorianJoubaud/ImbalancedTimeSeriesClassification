@@ -96,6 +96,19 @@ class RESNET:
         return model
 
   #Complie model, we use ReduceLR to stop the learning
+
+
+  def lr_scheduler(epoch, lr):
+    # log the current learning rate onto W&B
+    if wandb.run is None:
+        raise wandb.Error("You must call wandb.init() before WandbCallback()")
+
+
+    wandb.log({'learning_rate': lr}, commit=False)
+
+    return lr
+
+
   def compile(self):
 
         self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(),
@@ -105,8 +118,9 @@ class RESNET:
 
 
 
-        self.callbacks = reduce_lr
 
+
+        self.callbacks = [tf.keras.callbacks.LearningRateScheduler(reduce_lr), tf.keras.callbacks.LearningRateScheduler(lr_scheduler)]
         print('=== Compiled ===')
 
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
@@ -137,7 +151,7 @@ class RESNET:
       }
 
         hist = self.model.fit(x_train, y_train, batch_size=mini_batch_size, epochs=nb_epochs,
-                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=[WandbCallback(), self.callbacks])
+                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=[WandbCallback(), self.callbacks[0], self.callbacks[1]])
 
         duration = time.time() - start_time
         print(f'=== Fitted in {duration} secondes')
