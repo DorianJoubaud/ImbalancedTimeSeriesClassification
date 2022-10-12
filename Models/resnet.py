@@ -113,7 +113,8 @@ class RESNET:
         self.optimizer = optimizer
 
     def on_epoch_end(self, epoch, logs=None):
-        lr = float(keras.backend.get_value(self.model.optimizer.lr))
+        #lr = float(keras.backend.get_value(self.model.optimizer.lr))
+        lr = float(keras.backend.eval(self.model.optimizer.lr))
         wandb.log({'lr': lr}, commit=False)
 
 
@@ -158,6 +159,7 @@ class RESNET:
         start_time = time.time()
 
         wandb.config = {
+
             "epochs": nb_epochs,
             "batch_size": mini_batch_size
       }
