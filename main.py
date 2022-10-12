@@ -50,6 +50,14 @@ for i in range(len(folders)):
     x_train, x_rem, y_train, y_rem = train_test_split(data,labels, train_size=0.8)
     x_val, x_test, y_val, y_test = train_test_split(x_rem,y_rem, test_size=0.5)
 
+
+    x_train_max = np.max(x_train)
+    x_train_min = np.min(x_train)
+    #normalise in [-1;1]
+    x_train = 2. * (x_train - x_train_min) / (x_train_max - x_train_min) - 1.
+    x_val = 2. * (x_val - x_train_min) / (x_train_max - x_train_min) - 1.
+    x_test = 2. * (x_test - x_train_min) / (x_train_max - x_train_min) - 1.
+
     nb_timesteps = int(x_train.shape[1] / nb_dims)
     input_shape = (nb_timesteps , nb_dims)
 
@@ -58,7 +66,9 @@ for i in range(len(folders)):
 
 
     x_test = x_test.reshape((-1, input_shape[0], input_shape[1]))
+    x_val = x_val.reshape((-1, input_shape[0], input_shape[1]))
     x_train = x_train.reshape((-1, input_shape[0], input_shape[1]))
+
     y_test = to_categorical(class_offset(y_test, dataset), nb_class)
 
     _, rat = np.unique(y_train, return_counts=True)
