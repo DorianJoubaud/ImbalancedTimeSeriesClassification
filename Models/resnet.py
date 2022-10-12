@@ -147,7 +147,6 @@ class RESNET:
         start_time = time.time()
 
         wandb.config = {
-            "learning_rate": 0.001,
             "epochs": nb_epochs,
             "batch_size": mini_batch_size
       }
