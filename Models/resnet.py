@@ -115,7 +115,6 @@ class RESNET:
     def on_epoch_end(self, epoch, logs=None):
         #lr = float(keras.backend.get_value(self.model.optimizer.lr))
         lr = float(keras.backend.get_value(self.model.optimizer.lr))
-        lr = keras.optimizers.schedules.LearningRateSchedule(epoch, lr)
         wandb.log({'lr': lr}, commit=False)
 
 
@@ -140,7 +139,7 @@ class RESNET:
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
         wandb.init(project="ImbalanceClassification", entity="djbd")
         wandb.run.name = f'Run test'
-        self.callbacks = [WandbCallback(), self.LRLogger(reduce_lr)]
+        self.callbacks = [ self.LRLogger(reduce_lr),WandbCallback()]
 
         print('=== Connected to wandb ===')
 
