@@ -123,7 +123,7 @@ class RESNET:
 
   def compile(self):
 
-        self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(lr = 0.0001),
+        self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(lr = 0.01),
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
 
         reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
@@ -159,7 +159,7 @@ class RESNET:
         start_time = time.time()
 
         wandb.config = {
-            "lr": 0.0001,
+            "lr": 0.001,
 
             "epochs": nb_epochs,
             "batch_size": mini_batch_size
