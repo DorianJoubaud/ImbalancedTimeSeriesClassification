@@ -108,7 +108,7 @@ class RESNET:
 
   class LRLogger(tf.keras.callbacks.Callback):
     def __init__(self, optimizer):
-        super(LRLogger, self).__init__()
+
         self.optimizer = optimizer
 
     def on_epoch_end(self, epoch, logs):
