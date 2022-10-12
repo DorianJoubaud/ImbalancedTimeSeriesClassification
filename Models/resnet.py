@@ -110,7 +110,7 @@ class RESNET:
   class LRLogger(keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs=None):
-        lr = float(keras.backend.get_value(self.model.optimizer.lr))
+        lr = float(keras.backend.get_value(self.model.optimizer.lr[1]))
         wandb.log({'lr': lr}, commit=False)
 
 
