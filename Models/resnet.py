@@ -13,6 +13,7 @@ class RESNET:
   # Constructor
   def __init__(self, output_directory, input_shape, nb_classes, verbose=False, build=True):
         self.output_directory = output_directory
+        self.callbacks = list()
         if build == True:
             self.model = self.build_model(input_shape, nb_classes)
             if (verbose == True):
