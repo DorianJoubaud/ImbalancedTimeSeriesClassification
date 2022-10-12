@@ -98,18 +98,18 @@ class RESNET:
   #Complie model, we use ReduceLR to stop the learning
 
 
-  class MyLRSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
+  """ class MyLRSchedule(keras.optimizers.schedules.LearningRateSchedule):
 
     def __init__(self, initial_learning_rate):
       self.initial_learning_rate = initial_learning_rate
 
     def __call__(self, step):
-      return self.initial_learning_rate / float((step + 1))
+      return self.initial_learning_rate / float((step + 1)) """
 
-  class LRLogger(tf.keras.callbacks.Callback):
+  class LRLogger(keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs=None):
-        lr = float(tf.keras.backend.get_value(self.model.optimizer.lr))
+        lr = float(keras.backend.get_value(self.model.optimizer.lr))
         wandb.log({'lr': lr}, commit=False)
 
 
