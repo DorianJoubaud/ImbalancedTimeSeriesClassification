@@ -98,16 +98,24 @@ class RESNET:
   #Complie model, we use ReduceLR to stop the learning
 
 
-  def lr_scheduler(epoch, lr):
-    # log the current learning rate onto W&B
-    if wandb.run is None:
-        raise wandb.Error("You must call wandb.init() before WandbCallback()")
+  class MyLRSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
+
+    def __init__(self, initial_learning_rate):
+      self.initial_learning_rate = initial_learning_rate
+
+    def __call__(self, step):
+      return self.initial_learning_rate / (step + 1)
+
+  class LRLogger(tf.keras.callbacks.Callback):
+    def __init__(self, optimizer):
+        super(self.LRLogger, self).__init__()
+        self.optimizer = optimizer
+
+    def on_epoch_end(self, epoch, logs):
+        lr = self.optimizer.learning_rate(self.optimizer.iterations)
+        wandb.log({"lr": lr}, commit=False)
 
 
-    wandb.log({'learning_rate': lr}, commit=False)
-
-
-    return float(lr)
 
 
 
@@ -117,17 +125,18 @@ class RESNET:
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
 
         reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='loss', factor=0.5, patience=50, min_lr=0.0001)
+        #optimizer = keras.optimizers.SGD(learning_rate=self.MyLRSchedule(0.0001))
 
 
 
 
 
-        self.callbacks = [reduce_lr, keras.callbacks.LearningRateScheduler(self.lr_scheduler)]
+        self.callbacks = [WandbCallback(), self.LRLogger(reduce_lr)]
         print('=== Compiled ===')
 
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
         wandb.init(project="ImbalanceClassification", entity="djbd")
-        #wandb.run.name = f"MPPO_{dateenv}_{wandb.run.id}"
+        wandb.run.name = f'Run test'
 
         print('=== Connected to wandb ===')
 
@@ -151,8 +160,9 @@ class RESNET:
             "batch_size": mini_batch_size
       }
 
+
         hist = self.model.fit(x_train, y_train, batch_size=mini_batch_size, epochs=nb_epochs,
-                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=[WandbCallback(), self.callbacks[0], self.callbacks[1]])
+                              verbose=self.verbose, validation_data=(x_val, y_val), callbacks=self.callbacks)
 
         duration = time.time() - start_time
         print(f'=== Fitted in {duration} secondes')
