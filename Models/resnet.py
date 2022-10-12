@@ -123,7 +123,7 @@ class RESNET:
 
   def compile(self):
 
-        self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(),
+        self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(lr = 0.0001),
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
 
         reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=50, min_lr=0.0001)
