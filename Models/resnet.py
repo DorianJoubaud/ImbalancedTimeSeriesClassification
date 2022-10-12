@@ -112,7 +112,7 @@ class RESNET:
         self.optimizer = optimizer
 
     def on_epoch_end(self, epoch, logs):
-        lr = self.optimizer
+        lr = self.optimizer.learning_rate(self.optimizer.iterations)
         wandb.log({"lr": lr}, commit=False)
 
 
