@@ -113,9 +113,9 @@ class RESNET:
 
         self.optimizer = optimizer
 
-    def on_epoch_end(self, epoch, logs=None):
-        lr = float(tf.keras.backend.eval(self.model.optimizer.lr))
-        wandb.log({'lr': lr}, commit=False)
+    def on_epoch_end(self, epoch, logs):
+        lr = self.optimizer.learning_rate(self.optimizer.iterations)
+        wandb.log({"lr": lr}, commit=False)
 
 
 
