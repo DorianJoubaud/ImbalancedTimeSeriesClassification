@@ -121,12 +121,12 @@ class RESNET:
 
 
   def compile(self):
-        optimizer = tf.keras.optimizers.SGD(learning_rate=self.MyLRSchedule(0.001))
+        optimizer = tf.keras.optimizers.SGD(learning_rate=0.001)
 
         self.model.compile(loss='categorical_crossentropy', optimizer=optimizer,
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
 
-        #reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
+        reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
 
 
 
@@ -139,7 +139,7 @@ class RESNET:
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
         wandb.init(project="ImbalanceClassification", entity="djbd")
         wandb.run.name = f'Run test'
-        self.callbacks = [ self.LRLogger(optimizer),WandbCallback()]
+        self.callbacks = [ self.LRLogger(reduce_lr),WandbCallback()]
 
         print('=== Connected to wandb ===')
 
