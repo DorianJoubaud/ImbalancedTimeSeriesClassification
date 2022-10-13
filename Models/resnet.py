@@ -108,6 +108,9 @@ class RESNET:
       return self.initial_learning_rate / (step + 1)
 
   class LRLogger(tf.keras.callbacks.Callback):
+    def __init__(self, optimizer):
+
+        self.optimizer = optimizer
 
     def on_epoch_end(self, epoch, logs=None):
         lr = float(tf.keras.backend.get_value(self.model.optimizer.lr))
