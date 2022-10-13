@@ -107,6 +107,28 @@ class RESNET:
     def __call__(self, step):
       return self.initial_learning_rate / float((step + 1))
       '''
+  class ReduceLROnPlateauScheduler:
+    """Wrapper of torch.optim.lr_scheduler.ReduceLROnPlateau with __call__ method like other schedulers in
+        contrib\handlers\param_scheduler.py"""
+
+    def __init__(
+            self,
+            optimizer,
+            metric_name,
+            mode='min', factor=0.1, patience=10,
+            threshold=1e-4, threshold_mode='rel', cooldown=0,
+            min_lr=0, eps=1e-8, verbose=False,
+    ):
+        self.metric_name = metric_name
+        self.scheduler = keras.callbacks.ReduceLROnPlateau(optimizer, mode=mode, factor=factor, patience=patience,
+                                           threshold=threshold, threshold_mode=threshold_mode, cooldown=cooldown,
+                                           min_lr=min_lr, eps=eps, verbose=verbose)
+
+    def __call__(self, engine, name=None):
+        self.scheduler.step(engine.state.metrics[self.metric_name])
+
+    def state_dict(self):
+        return self.scheduler.state_dict()
 
   class LRLogger(tf.keras.callbacks.Callback):
     def __init__(self, optimizer):
@@ -122,12 +144,12 @@ class RESNET:
 
 
   def compile(self):
-        #optimizer = tf.keras.optimizers.SGD(learning_rate=self.MyLRSchedule(0.001), momentum=0.9)
+        optimizer = tf.keras.optimizers.SGD(learning_rate=0.001)
 
         self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.SGD(0.001),
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
 
-        reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
+        reduce_lr = self.ReduceLROnPlateauScheduler(optimizer = optimizer ,metric_name='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
 
 
 
