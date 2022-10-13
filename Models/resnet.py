@@ -99,13 +99,13 @@ class RESNET:
   #Complie model, we use ReduceLR to stop the learning
 
 
-  class MyLRSchedule(keras.callbacks.LearningRateScheduler):
+  '''class MyLRSchedule(keras.callbacks.LearningRateScheduler):
 
     def __init__(self, initial_learning_rate):
       self.initial_learning_rate = initial_learning_rate
 
     def __call__(self, step):
-      return self.initial_learning_rate / (step + 1)
+      return self.initial_learning_rate / (step + 1)'''
 
   class LRLogger(tf.keras.callbacks.Callback):
     def __init__(self, optimizer):
@@ -115,7 +115,7 @@ class RESNET:
     def on_epoch_end(self, epoch, logs):
         lr = self.optimizer.learning_rate(self.optimizer.iterations)
         wandb.log({"lr": lr}, commit=False)
-  class ReduceLROnPlateau(keras.callbacks.ReduceLROnPlateau, MyLRSchedule):
+  class ReduceLROnPlateau(keras.callbacks.ReduceLROnPlateau, keras.callbacks.LearningRateScheduler):
     def get_lr(self):
         return [ group['lr'] for group in self.optimizer.param_groups ]
 
