@@ -99,13 +99,13 @@ class RESNET:
   #Complie model, we use ReduceLR to stop the learning
 
 
-  '''class MyLRSchedule(keras.callbacks.LearningRateScheduler):
+  class MyLRSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
 
     def __init__(self, initial_learning_rate):
       self.initial_learning_rate = initial_learning_rate
 
     def __call__(self, step):
-      return self.initial_learning_rate / (step + 1)'''
+      return self.initial_learning_rate / (step + 1)
 
   class LRLogger(tf.keras.callbacks.Callback):
     def __init__(self, optimizer):
@@ -121,7 +121,7 @@ class RESNET:
 
 
   def compile(self):
-        optimizer = tf.keras.optimizers.SGD(learning_rate=0.001)
+        optimizer = tf.keras.optimizers.SGD(learning_rate=self.MyLRSchedule(0.001), momentum=0.9)
 
         self.model.compile(loss='categorical_crossentropy', optimizer=optimizer,
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
