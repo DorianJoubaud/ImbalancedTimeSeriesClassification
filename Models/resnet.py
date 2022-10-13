@@ -99,13 +99,13 @@ class RESNET:
   #Complie model, we use ReduceLR to stop the learning
 
 
-  """ class MyLRSchedule(keras.optimizers.schedules.LearningRateSchedule):
+  class MyLRSchedule(keras.optimizers.schedules.LearningRateSchedule):
 
     def __init__(self, initial_learning_rate):
       self.initial_learning_rate = initial_learning_rate
 
     def __call__(self, step):
-      return self.initial_learning_rate / float((step + 1)) """
+      return self.initial_learning_rate / float((step + 1))
 
   class LRLogger(keras.callbacks.Callback):
     def __init__(self, optimizer):
@@ -126,8 +126,8 @@ class RESNET:
         self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(lr = 0.01),
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
 
-        reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
-        #optimizer = keras.optimizers.SGD(learning_rate=self.MyLRSchedule(0.0001))
+        #reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
+        optimizer = tf.keras.optimizers.SGD(learning_rate=self.MyLRSchedule(0.001))
 
 
 
@@ -139,7 +139,7 @@ class RESNET:
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
         wandb.init(project="ImbalanceClassification", entity="djbd")
         wandb.run.name = f'Run test'
-        self.callbacks = [ keras.callbacks.LearningRateScheduler(reduce_lr,verbose=True)(reduce_lr),WandbCallback()]
+        self.callbacks = [ self.LRLogger(optimizer),WandbCallback()]
 
         print('=== Connected to wandb ===')
 
