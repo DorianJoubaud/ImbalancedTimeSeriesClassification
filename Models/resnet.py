@@ -105,7 +105,7 @@ class RESNET:
       self.initial_learning_rate = initial_learning_rate
 
     def __call__(self, step):
-      return self.initial_learning_rate / (step + 1)
+      return float(self.initial_learning_rate / (step + 1))
 
   class LRLogger(tf.keras.callbacks.Callback):
     def __init__(self, optimizer):
