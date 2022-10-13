@@ -122,7 +122,7 @@ class RESNET:
 
 
   def compile(self):
-        optimizer = tf.keras.optimizers.SGD(learning_rate=keras.optimizers.schedules.LearningRateScheduler(0.001))
+        optimizer = tf.keras.optimizers.SGD(learning_rate=keras.callbacks.LearningRateScheduler.LearningRateScheduler(0.001))
 
         self.model.compile(loss='categorical_crossentropy', optimizer=optimizer,
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
