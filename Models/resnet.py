@@ -107,14 +107,10 @@ class RESNET:
     def __call__(self, step):
       return self.initial_learning_rate / (step + 1)
 
-  class LRLogger(keras.callbacks.Callback):
-    def __init__(self, optimizer):
-
-        self.optimizer = optimizer
+  class LRLogger(tf.keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs=None):
-        #lr = float(keras.backend.get_value(self.model.optimizer.lr))
-        lr = keras.backend.get_value(self.model.optimizer.lr)
+        lr = float(tf.keras.backend.get_value(self.model.optimizer.lr))
         wandb.log({'lr': lr}, commit=False)
 
 
