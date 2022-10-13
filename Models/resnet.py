@@ -149,7 +149,7 @@ class RESNET:
         self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.SGD(0.001),
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
 
-        reduce_lr = self.ReduceLROnPlateauScheduler(optimizer = optimizer ,metric_name='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
+        reduce_lr = self.ReduceLROnPlateauScheduler(optimizer = optimizer ,metric_name='val_loss',mode="auto", factor=0.5,patience=5,  min_lr=0.0001,verbose = 1)
 
 
 
