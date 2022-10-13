@@ -144,7 +144,7 @@ class RESNET:
 
 
   def compile(self):
-        optimizer = tf.keras.optimizers.SGD(learning_rate=0.001)
+        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
         self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(0.001),
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
