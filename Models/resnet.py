@@ -115,9 +115,7 @@ class RESNET:
     def on_epoch_end(self, epoch, logs):
         lr = self.optimizer.learning_rate(self.optimizer.iterations)
         wandb.log({"lr": lr}, commit=False)
-  class ReduceLROnPlateau(keras.callbacks.ReduceLROnPlateau, keras.optimizers.schedules):
-    def get_lr(self):
-        return [ group['lr'] for group in self.optimizer.param_groups ]
+
 
 
 
@@ -128,7 +126,7 @@ class RESNET:
         self.model.compile(loss='categorical_crossentropy', optimizer=optimizer,
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
 
-        reduce_lr = self.ReduceLROnPlateau(monitor='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
+        #reduce_lr = self.ReduceLROnPlateau(monitor='val_loss', factor=0.5,verbose = 1,mode="auto", patience=5, min_lr=0.0001)
 
 
 
@@ -141,7 +139,7 @@ class RESNET:
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
         wandb.init(project="ImbalanceClassification", entity="djbd")
         wandb.run.name = f'Run test'
-        self.callbacks = [ self.LRLogger(reduce_lr),WandbCallback()]
+        self.callbacks = [ self.LRLogger(optimizer),WandbCallback()]
 
         print('=== Connected to wandb ===')
 
