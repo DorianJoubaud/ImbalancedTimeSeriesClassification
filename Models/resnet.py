@@ -139,7 +139,7 @@ class RESNET:
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
         wandb.init(project="ImbalanceClassification", entity="djbd")
         wandb.run.name = f'Run test'
-        self.callbacks = [ self.LRLogger(reduce_lr),WandbCallback()]
+        self.callbacks = [ keras.callbacks.LearningRateScheduler(reduce_lr,verbose=True)(reduce_lr),WandbCallback()]
 
         print('=== Connected to wandb ===')
 
