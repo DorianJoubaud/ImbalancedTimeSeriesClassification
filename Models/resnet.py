@@ -114,7 +114,7 @@ class RESNET:
 
     def on_epoch_end(self, epoch, logs=None):
         #lr = float(keras.backend.get_value(self.model.optimizer.lr))
-        lr = float(keras.backend.get_value(self.model.optimizer.lr))
+        lr = keras.backend.get_value(self.model.optimizer.lr)
         wandb.log({'lr': lr}, commit=False)
 
 
