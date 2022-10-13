@@ -115,7 +115,9 @@ class RESNET:
     def on_epoch_end(self, epoch, logs):
         lr = self.optimizer.learning_rate(self.optimizer.iterations)
         wandb.log({"lr": lr}, commit=False)
-
+  class ReduceLROnPlateau(keras.callbacks.ReduceLROnPlateau, MyLRSchedule):
+    def get_lr(self):
+        return [ group['lr'] for group in self.optimizer.param_groups ]
 
 
 
