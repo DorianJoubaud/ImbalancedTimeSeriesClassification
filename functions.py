@@ -81,7 +81,7 @@ def raw_data(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     return accu, mcc, f, rec, pres, g, histo
 
 
-def ROS_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes, sp_str):
+def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes, sp_str='all'):
     #Don t forget to put y train & y test to categorical
 
     oversample = RandomOverSampler(sampling_strategy=sp_str)
@@ -89,7 +89,7 @@ def ROS_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classe
     model = RESNET('resnet/ROS/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
     y_over = to_categorical( class_offset(y_over, dataset), nb_classes)
-    histo = model.fit(X_over, y_over)
+    histo = model.fit(X_over, y_over, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
 
 
 
@@ -280,7 +280,7 @@ def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_sh
             oversample = SMOTE(k_neighbors=2)
             Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
         except:
-            return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes)
+            return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),[0]
 
 
 
