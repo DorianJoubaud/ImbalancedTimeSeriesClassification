@@ -45,10 +45,11 @@ for i in range(len(folders)):
 
 
 
-    data, labels = get_data(dataset, '\t')
-    labels = class_offset(labels, dataset)
-    x_train, x_rem, y_train, y_rem = train_test_split(data,labels, train_size=0.8)
-    x_val, x_test, y_val, y_test = train_test_split(x_rem,y_rem, test_size=0.5)
+    x_train,x_test,y_train,y_test = get_data(dataset, '\t')
+
+    y_train = class_offset(y_train, dataset)
+    y_test = class_offset(y_test, dataset)
+    x_val, x_test, y_val, y_test = train_test_split(x_test,y_test, test_size=0.5)
 
 
     x_train_max = np.max(x_train)
@@ -325,7 +326,7 @@ p = p.rename(index={i : folders[i] for i in range(len(folders))})
 print(p)
 p.to_csv('Results/Precision/pres.csv')
 
-r= pd.DataFrame(recall)
+r= pd.DataFrame(reca)
 
 r= r.rename(columns={0 : 'Raw',1 : 'ROS', 2:'Jittering', 3:'Time Warping', 4:'SMOTE', 5:'ADASYN'})
 r = r.rename(index={i : folders[i] for i in range(len(folders))})

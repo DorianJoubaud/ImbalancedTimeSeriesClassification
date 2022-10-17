@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 
 def get_data(dataset, deli):
-      x_train = np.array(pd.read_csv(f'data/{dataset}/{dataset}_TRAIN.tsv', delimiter=deli))
-      x_test = np.array(pd.read_csv(f'data/{dataset}/{dataset}_TEST.tsv', delimiter=deli))
+      x_train = np.array(pd.read_csv(f'data/{dataset}/{dataset}_TRAIN.tsv', delimiter=deli,header=None))
+      x_test = np.array(pd.read_csv(f'data/{dataset}/{dataset}_TEST.tsv', delimiter=deli,header=None))
 
       y_train = x_train[:,0]
       x_train = x_train[:,1:]
@@ -11,7 +11,8 @@ def get_data(dataset, deli):
       y_test = x_test[:,0]
       x_test = x_test[:,1:]
 
-      return np.concatenate((x_train,x_test)), np.concatenate((y_train,y_test))
+      return x_train, x_test, y_train, y_test
+
 
 def nb_dims(dataset):
     if dataset in ["unipen1a", "unipen1b", "unipen1c"]:
