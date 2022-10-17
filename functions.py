@@ -271,7 +271,7 @@ def tw_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes
 
 
 
-def SMOTE_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes, sp_st='all'):
+def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes, sp_st='all'):
      oversample = SMOTE(k_neighbors=1, sampling_strategy=sp_st)
      try:
         Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
@@ -287,7 +287,7 @@ def SMOTE_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_clas
      model = RESNET('resnet/SMOTE', input_shape, nb_classes, False)
      model.build_model(input_shape, nb_classes)
      y_over = to_categorical( class_offset(yo, dataset), nb_classes)
-     model.fit(Xo, y_over)
+     histo = model.fit(Xo,y_over, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
      y_pred = model.predict(x_test)
 
      f = f1_score(y_test, y_pred, average = None).tolist()
@@ -296,7 +296,7 @@ def SMOTE_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_clas
      rec = recall_score(y_test, y_pred, average=None).tolist()
      pres = precision_score(y_test, y_pred, average=None).tolist()
      g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-     return accu, mcc, f, rec, pres, g
+     return accu, mcc, f, rec, pres, g,histo
 
 def ADASYN_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes, sp_str = 'all'):
      oversample = ADASYN(sampling_strategy=sp_str)
