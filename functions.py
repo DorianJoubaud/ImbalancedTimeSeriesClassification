@@ -280,7 +280,7 @@ def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_sh
             oversample = SMOTE(k_neighbors=2)
             Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
         except:
-            return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),0
+            return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes)
 
 
 
@@ -308,7 +308,7 @@ def ADASYN_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_cla
             oversample = SMOTE(k_neighbors=1)
             Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
          except:
-            return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes)
+            return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),[0]
 
      else:
          Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
