@@ -107,28 +107,7 @@ class RESNET:
     def __call__(self, step):
       return self.initial_learning_rate / float((step + 1))
       '''
-  class ReduceLROnPlateauScheduler:
-    """Wrapper of torch.optim.lr_scheduler.ReduceLROnPlateau with __call__ method like other schedulers in
-        contrib\handlers\param_scheduler.py"""
 
-    def __init__(
-            self,
-            optimizer,
-            metric_name,
-            mode='min', factor=0.1, patience=10,
-            threshold=1e-4, threshold_mode='rel', cooldown=0,
-            min_lr=0, eps=1e-8, verbose=False,
-    ):
-        self.metric_name = metric_name
-        self.scheduler = keras.callbacks.ReduceLROnPlateau(optimizer, mode=mode, factor=factor, patience=patience,
-                                           threshold=threshold, threshold_mode=threshold_mode, cooldown=cooldown,
-                                           min_lr=min_lr, eps=eps, verbose=verbose)
-
-    def __call__(self, engine, name=None):
-        self.scheduler.step(engine.state.metrics[self.metric_name])
-
-    def state_dict(self):
-        return self.scheduler.state_dict()
 
   class LRLogger(tf.keras.callbacks.Callback):
     def __init__(self, optimizer):
@@ -139,17 +118,25 @@ class RESNET:
         lr = float(self.optimizer.lr(self.optimizer.iterations))
         wandb.log({"lr": lr}, commit=False)
 
+  class PrintLearningRate(keras.callbacks.Callback):
+    def __init__(self):
+        pass
+
+    def on_epoch_begin(self, epoch, logs=None):
+        lr = keras.backend.eval(self.model.optimizer._decayed_lr(tf.float64))
+        print("\nLearning rate at epoch {} is {}".format(epoch, lr))
+
 
 
 
 
   def compile(self):
-        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+
 
         self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(0.001),
                       metrics=[keras.metrics.Accuracy(),keras.metrics.Recall(), keras.metrics.Precision()])
 
-        reduce_lr = self.ReduceLROnPlateauScheduler(optimizer = optimizer ,metric_name='val_loss',mode="auto", factor=0.5,patience=5,  min_lr=0.0001,verbose = 1)
+        reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='loss', factor=0.5,patience=50, min_lr=0.0001)
 
 
 
@@ -162,7 +149,7 @@ class RESNET:
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
         wandb.init(project="ImbalanceClassification", entity="djbd")
         wandb.run.name = f'Run test'
-        self.callbacks = [ keras.callbacks.LearningRateScheduler(reduce_lr),WandbCallback()]
+        self.callbacks = [ self.PrintLearningRate(reduce_lr),WandbCallback()]
 
         print('=== Connected to wandb ===')
 
