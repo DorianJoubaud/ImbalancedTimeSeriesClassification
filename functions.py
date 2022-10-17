@@ -88,6 +88,7 @@ def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     X_over, y_over = oversample.fit_resample(x_train[:,:,0], y_train)
     model = RESNET('resnet/ROS/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
+    model.compile()
     y_over = to_categorical( class_offset(y_over, dataset), nb_classes)
     histo = model.fit(X_over, y_over, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
 
