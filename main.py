@@ -31,7 +31,7 @@ gm = list()
 presi = list()
 reca = list()
 
-nb_iter = 2.0
+nb_iter = 1.0
 
 
 for i in range(len(folders)):
@@ -131,7 +131,7 @@ for i in range(len(folders)):
     g = np.array([0.0 for cl in range(nb_class)])
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = ROS_test(dataset, x_train, y_train, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg = ROS_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
@@ -157,7 +157,7 @@ for i in range(len(folders)):
     g = np.array([0.0 for cl in range(nb_class)])
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = jitter_test(dataset, x_train, y_train, x_test, np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg = jitter_test(dataset, x_train, y_train,x_val, y_val, x_test, np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
@@ -184,7 +184,7 @@ for i in range(len(folders)):
     g = np.array([0.0 for cl in range(nb_class)])
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = tw_test(dataset, x_train, y_train, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg = tw_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
@@ -211,7 +211,7 @@ for i in range(len(folders)):
     g = np.array([0.0 for cl in range(nb_class)])
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = SMOTE_test(dataset, x_train, y_train, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg = SMOTE_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
@@ -238,7 +238,7 @@ for i in range(len(folders)):
     g = np.array([0.0 for cl in range(nb_class)])
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = ADASYN_test(dataset, x_train, y_train, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg = ADASYN_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
