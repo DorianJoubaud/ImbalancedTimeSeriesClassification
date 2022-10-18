@@ -184,6 +184,8 @@ class RESNET:
 
         self.model.save(self.output_directory + 'ResNet_weights.hdf5')
 
+        wandb.finish()
+
 
 
         return [hist, duration]
