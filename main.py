@@ -31,6 +31,8 @@ gm = list()
 presi = list()
 reca = list()
 
+nb_iter = 2.0
+
 
 for i in range(len(folders)):
     tmp_bench = list()
@@ -101,7 +103,7 @@ for i in range(len(folders)):
     g = np.array([0.0 for cl in range(nb_class)])
     histo = list()
 
-    for i in range(1):
+    for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg, histo = ROS_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
 
         accu += taccu
@@ -112,14 +114,14 @@ for i in range(len(folders)):
         pres += tpres
         g += tg
 
-    evolutionf.append(f/1) # f1 scores
-    evolutiong.append(g/1) #g means
-    evolutiona.append(accu/1) #accuracy
-    evolutionmcc.append(mcc/1) #mcc
-    evolutionrec.append(rec/1) #precision
-    evolutionpres.append(pres/1) #recall
+    evolutionf.append(f/nb_iter) # f1 scores
+    evolutiong.append(g/nb_iter) #g means
+    evolutiona.append(accu/nb_iter) #accuracy
+    evolutionmcc.append(mcc/nb_iter) #mcc
+    evolutionrec.append(rec/nb_iter) #precision
+    evolutionpres.append(pres/nb_iter) #recall
 
-    """     #ROS
+        #ROS
 
     accu = 0
     mcc = 0
@@ -128,7 +130,7 @@ for i in range(len(folders)):
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
 
-    for i in range(3):
+    for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg = ROS_test(dataset, x_train, y_train, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
@@ -139,12 +141,12 @@ for i in range(len(folders)):
         pres += tpres
         g += tg
 
-    evolutionf.append(f/3) # f1 scores
-    evolutiong.append(g/3) #g means
-    evolutiona.append(accu/3) #accuracy
-    evolutionmcc.append(mcc/3) #mcc
-    evolutionrec.append(rec/3) #precision
-    evolutionpres.append(pres/3) #recall
+    evolutionf.append(f/nb_iter) # f1 scores
+    evolutiong.append(g/nb_iter) #g means
+    evolutiona.append(accu/nb_iter) #accuracy
+    evolutionmcc.append(mcc/nb_iter) #mcc
+    evolutionrec.append(rec/nb_iter) #precision
+    evolutionpres.append(pres/nb_iter) #recall
 
     #Jittering
     accu = 0
@@ -154,7 +156,7 @@ for i in range(len(folders)):
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
 
-    for i in range(3):
+    for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg = jitter_test(dataset, x_train, y_train, x_test, np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
@@ -165,12 +167,12 @@ for i in range(len(folders)):
         pres += tpres
         g += tg
 
-    evolutionf.append(f/3) # f1 scores
-    evolutiong.append(g/3) #g means
-    evolutiona.append(accu/3) #accuracy
-    evolutionmcc.append(mcc/3) #mcc
-    evolutionrec.append(rec/3) #precision
-    evolutionpres.append(pres/3) #recall
+    evolutionf.append(f/nb_iter) # f1 scores
+    evolutiong.append(g/nb_iter) #g means
+    evolutiona.append(accu/nb_iter) #accuracy
+    evolutionmcc.append(mcc/nb_iter) #mcc
+    evolutionrec.append(rec/nb_iter) #precision
+    evolutionpres.append(pres/nb_iter) #recall
 
     #TW
 
@@ -181,7 +183,7 @@ for i in range(len(folders)):
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
 
-    for i in range(3):
+    for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg = tw_test(dataset, x_train, y_train, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
@@ -192,12 +194,12 @@ for i in range(len(folders)):
         pres += tpres
         g += tg
 
-    evolutionf.append(f/3) # f1 scores
-    evolutiong.append(g/3) #g means
-    evolutiona.append(accu/3) #accuracy
-    evolutionmcc.append(mcc/3) #mcc
-    evolutionrec.append(rec/3) #precision
-    evolutionpres.append(pres/3) #recall
+    evolutionf.append(f/nb_iter) # f1 scores
+    evolutiong.append(g/nb_iter) #g means
+    evolutiona.append(accu/nb_iter) #accuracy
+    evolutionmcc.append(mcc/nb_iter) #mcc
+    evolutionrec.append(rec/nb_iter) #precision
+    evolutionpres.append(pres/nb_iter) #recall
 
 
     #SMOTE
@@ -208,7 +210,7 @@ for i in range(len(folders)):
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
 
-    for i in range(3):
+    for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg = SMOTE_test(dataset, x_train, y_train, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
@@ -219,12 +221,12 @@ for i in range(len(folders)):
         pres += tpres
         g += tg
 
-    evolutionf.append(f/3) # f1 scores
-    evolutiong.append(g/3) #g means
-    evolutiona.append(accu/3) #accuracy
-    evolutionmcc.append(mcc/3) #mcc
-    evolutionrec.append(rec/3) #precision
-    evolutionpres.append(pres/3) #recall
+    evolutionf.append(f/nb_iter) # f1 scores
+    evolutiong.append(g/nb_iter) #g means
+    evolutiona.append(accu/nb_iter) #accuracy
+    evolutionmcc.append(mcc/nb_iter) #mcc
+    evolutionrec.append(rec/nb_iter) #precision
+    evolutionpres.append(pres/nb_iter) #recall
 
 
     #ADASYN
@@ -235,7 +237,7 @@ for i in range(len(folders)):
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
 
-    for i in range(3):
+    for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg = ADASYN_test(dataset, x_train, y_train, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
@@ -246,16 +248,15 @@ for i in range(len(folders)):
         pres += tpres
         g += tg
 
-    evolutionf.append(f/3) # f1 scores
-    evolutiong.append(g/3) #g means
-    evolutiona.append(accu/3) #accuracy
-    evolutionmcc.append(mcc/3) #mcc
-    evolutionrec.append(rec/3) #precision
-    evolutionpres.append(pres/3) #recall
+    evolutionf.append(f/nb_iter) # f1 scores
+    evolutiong.append(g/nb_iter) #g means
+    evolutiona.append(accu/nb_iter) #accuracy
+    evolutionmcc.append(mcc/nb_iter) #mcc
+    evolutionrec.append(rec/nb_iter) #precision
+    evolutionpres.append(pres/nb_iter) #recall
 
 
- """
-    print(f'folders[i]', evolutionf)
+
 
 
     accuracy.append(evolutiona)
@@ -265,7 +266,7 @@ for i in range(len(folders)):
     presi.append(evolutionpres)
     reca.append(evolutionrec)
 
-    print(f1)
+
 
 
 

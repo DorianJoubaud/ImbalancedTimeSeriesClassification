@@ -66,7 +66,7 @@ def raw_data(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
 
     model = RESNET('resnet/Raw/'+dataset, input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    model.compile()
+    model.compile(dataset, 'Raw')
     y_raw = to_categorical(class_offset(y_train, dataset), nb_classes)
 
     histo = model.fit(x_train, y_raw, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
@@ -88,7 +88,7 @@ def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     X_over, y_over = oversample.fit_resample(x_train[:,:,0], y_train)
     model = RESNET('resnet/ROS/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    model.compile()
+    model.compile(dataset, 'ROS')
     y_over = to_categorical( class_offset(y_over, dataset), nb_classes)
     histo = model.fit(X_over, y_over, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
 
@@ -109,7 +109,7 @@ def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
 
 
 
-def jitter_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes,sp_str):
+def jitter_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes,sp_str):
 
     def Augmentation(function, data, label_data, class_under, nb):
       underReprClass = list()
@@ -170,8 +170,9 @@ def jitter_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_cla
     oversamp_labels = to_categorical( class_offset(oversamp_labels, dataset), nb_classes)
     model = RESNET('resnet/Jitter/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    y_over = to_categorical( class_offset(aug_labels, dataset), nb_classes)
-    model.fit(aug, y_over)
+    model.comile(dataset, 'Jittering')
+
+    histo = model.fit(oversamp, oversamp_labels, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
 
 
 
@@ -183,9 +184,9 @@ def jitter_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_cla
     rec = recall_score(y_test, y_pred, average=None).tolist()
     pres = precision_score(y_test, y_pred, average=None).tolist()
     g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-    return accu, mcc, f, rec, pres, g
+    return accu, mcc, f, rec, pres, g, histo
 
-def tw_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes,sp_str):
+def tw_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes,sp_str):
     def Augmentation(function, data, label_data, class_under, nb):
       underReprClass = list()
       idxs = np.where((label_data == class_under))[0]
@@ -255,8 +256,8 @@ def tw_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes
     oversamp_labels = to_categorical( class_offset(oversamp_labels, dataset), nb_classes)
     model = RESNET('resnet/TW/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    y_over = to_categorical( class_offset(aug_labels, dataset), nb_classes)
-    model.fit(aug, y_over)
+    model.compile(dataset, 'TW')
+    histo = model.fit(oversamp, oversamp_labels, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
 
 
 
@@ -268,7 +269,7 @@ def tw_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes
     rec = recall_score(y_test, y_pred, average=None).tolist()
     pres = precision_score(y_test, y_pred, average=None).tolist()
     g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-    return accu, mcc, f, rec, pres, g
+    return accu, mcc, f, rec, pres, g, histo
 
 
 
@@ -288,6 +289,7 @@ def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_sh
      model = RESNET('resnet/SMOTE', input_shape, nb_classes, False)
      model.build_model(input_shape, nb_classes)
      y_over = to_categorical( class_offset(yo, dataset), nb_classes)
+     model.compile(dataset, 'SMOTE')
      histo = model.fit(Xo,y_over, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
      y_pred = model.predict(x_test)
 
@@ -299,7 +301,7 @@ def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_sh
      g = geometric_mean_score(y_test, y_pred, average=None).tolist()
      return accu, mcc, f, rec, pres, g,histo
 
-def ADASYN_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_classes, sp_str = 'all'):
+def ADASYN_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes, sp_str = 'all'):
      oversample = ADASYN(sampling_strategy=sp_str)
      try:
          Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
@@ -319,7 +321,8 @@ def ADASYN_test(dataset, x_train, y_train, x_test,  y_test, input_shape,  nb_cla
      model = RESNET('resnet/ADASYN/', input_shape, nb_classes, False)
      model.build_model(input_shape, nb_classes)
      y_over = to_categorical( class_offset(yo, dataset), nb_classes)
-     model.fit(Xo, y_over)
+     model.compile(dataset, 'ADASYN')
+     histo = model.fit(Xo,y_over, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
      y_pred = model.predict(x_test)
 
      f = f1_score(y_test, y_pred, average = None).tolist()
