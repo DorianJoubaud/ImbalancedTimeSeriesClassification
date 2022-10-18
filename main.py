@@ -104,7 +104,7 @@ for i in range(len(folders)):
     histo = list()
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg, histo = ROS_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
+        taccu,tmcc, tf, trec, tpres, tg, histo = raw_data(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
 
         accu += taccu
         mcc += tmcc
