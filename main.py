@@ -31,10 +31,14 @@ gm = list()
 presi = list()
 reca = list()
 
+
 nb_iter = 1.0
 
 
 for i in range(len(folders)):
+
+    Losses = list()
+    val_Losses = list()
     tmp_bench = list()
     dataset = folders[i]
 
@@ -92,6 +96,8 @@ for i in range(len(folders)):
     evolutionrec = list() #precision
     evolutionrec = list() #precision
     evolutionpres = list() #recall
+    evolutionLoss = list()
+    evolutionValLoss = list()
 
     #RAW DATA
 
@@ -101,7 +107,8 @@ for i in range(len(folders)):
     rec = np.array([0.0 for cl in range(nb_class)])
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
-    histo = list()
+    l = np.array()
+    vl = np.array()
 
     for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg, histo = raw_data(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
@@ -113,6 +120,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
+        l += histo['loss']
+        vl += histo['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -120,6 +129,8 @@ for i in range(len(folders)):
     evolutionmcc.append(mcc/nb_iter) #mcc
     evolutionrec.append(rec/nb_iter) #precision
     evolutionpres.append(pres/nb_iter) #recall
+    evolutionLoss.append(l/nb_iter)
+    evolutionValLoss.append(vl/nb_iter)
 
         #ROS
 
@@ -129,9 +140,12 @@ for i in range(len(folders)):
     rec = np.array([0.0 for cl in range(nb_class)])
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
+    l = np.array()
+    vl = np.array()
+
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = ROS_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg, histo = ROS_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
@@ -140,6 +154,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
+        l += histo['loss']
+        vl += histo['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -147,6 +163,8 @@ for i in range(len(folders)):
     evolutionmcc.append(mcc/nb_iter) #mcc
     evolutionrec.append(rec/nb_iter) #precision
     evolutionpres.append(pres/nb_iter) #recall
+    evolutionLoss.append(l/nb_iter)
+    evolutionValLoss.append(vl/nb_iter)
 
     #Jittering
     accu = 0
@@ -155,9 +173,11 @@ for i in range(len(folders)):
     rec = np.array([0.0 for cl in range(nb_class)])
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
+    l = np.array()
+    vl = np.array()
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = jitter_test(dataset, x_train, y_train,x_val, y_val, x_test, np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg, histo = jitter_test(dataset, x_train, y_train,x_val, y_val, x_test, np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
@@ -166,6 +186,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
+        l += histo['loss']
+        vl += histo['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -173,6 +195,8 @@ for i in range(len(folders)):
     evolutionmcc.append(mcc/nb_iter) #mcc
     evolutionrec.append(rec/nb_iter) #precision
     evolutionpres.append(pres/nb_iter) #recall
+    evolutionLoss.append(l/nb_iter)
+    evolutionValLoss.append(vl/nb_iter)
 
     #TW
 
@@ -182,9 +206,11 @@ for i in range(len(folders)):
     rec = np.array([0.0 for cl in range(nb_class)])
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
+    l = np.array()
+    vl = np.array()
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = tw_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg, histo = tw_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
@@ -193,6 +219,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
+        l += histo['loss']
+        vl += histo['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -200,6 +228,8 @@ for i in range(len(folders)):
     evolutionmcc.append(mcc/nb_iter) #mcc
     evolutionrec.append(rec/nb_iter) #precision
     evolutionpres.append(pres/nb_iter) #recall
+    evolutionLoss.append(l/nb_iter)
+    evolutionValLoss.append(vl/nb_iter)
 
 
     #SMOTE
@@ -209,9 +239,11 @@ for i in range(len(folders)):
     rec = np.array([0.0 for cl in range(nb_class)])
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
+    l = np.array()
+    vl = np.array()
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = SMOTE_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg, histo = SMOTE_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
@@ -220,6 +252,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
+        l += histo['loss']
+        vl += histo['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -227,6 +261,8 @@ for i in range(len(folders)):
     evolutionmcc.append(mcc/nb_iter) #mcc
     evolutionrec.append(rec/nb_iter) #precision
     evolutionpres.append(pres/nb_iter) #recall
+    evolutionLoss.append(l/nb_iter)
+    evolutionValLoss.append(vl/nb_iter)
 
 
     #ADASYN
@@ -236,9 +272,11 @@ for i in range(len(folders)):
     rec = np.array([0.0 for cl in range(nb_class)])
     pres = np.array([0.0 for cl in range(nb_class)])
     g = np.array([0.0 for cl in range(nb_class)])
+    l = np.array()
+    vl = np.array()
 
     for i in range(int(nb_iter)):
-        taccu,tmcc, tf, trec, tpres, tg = ADASYN_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
+        taccu,tmcc, tf, trec, tpres, tg, histo = ADASYN_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
 
         accu += taccu
         mcc += tmcc
@@ -247,6 +285,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
+        l += histo['loss']
+        vl += histo['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -254,6 +294,8 @@ for i in range(len(folders)):
     evolutionmcc.append(mcc/nb_iter) #mcc
     evolutionrec.append(rec/nb_iter) #precision
     evolutionpres.append(pres/nb_iter) #recall
+    evolutionLoss.append(l/nb_iter)
+    evolutionValLoss.append(vl/nb_iter)
 
 
 
@@ -265,6 +307,18 @@ for i in range(len(folders)):
     gm.append(evolutiong)
     presi.append(evolutionpres)
     reca.append(evolutionrec)
+    Losses.append(evolutionLoss)
+    val_Losses.append(evolutionValLoss)
+
+    os.makedirs(f'Results/Loss/{dataset}')
+    os.makedirs(f'Results/Val_Loss/{dataset}')
+
+    pd_loss = pd.DataFrame(Losses)
+    pd_loss = pd_loss.rename(index={0 : 'Raw',1 : 'ROS', 2:'Jittering', 3:'Time Warping', 4:'SMOTE', 5:'ADASYN'})
+    pd_loss.to_csv(f'Results/Loss/{dataset}/loss.csv')
+    pd_val_loss = pd.DataFrame(val_Losses)
+    pd_val_loss = pd_val_loss.rename(index={0 : 'Raw',1 : 'ROS', 2:'Jittering', 3:'Time Warping', 4:'SMOTE', 5:'ADASYN'})
+    pd_val_loss.to_csv(f'Results/Val_Loss/{dataset}/val_loss.csv')
 
 
 
@@ -283,11 +337,9 @@ os.makedirs('Results/F1_scores', exist_ok=True)
 os.makedirs('Results/G_scores', exist_ok=True)
 os.makedirs('Results/Precision', exist_ok=True)
 os.makedirs('Results/Recall', exist_ok=True)
-os.makedirs('Results/Historic', exist_ok=True)
 
 
-hist = pd.DataFrame(histo)
-hist.to_csv('Results/Historic/hist.csv')
+
 
 
 acc = pd.DataFrame(accuracy)
