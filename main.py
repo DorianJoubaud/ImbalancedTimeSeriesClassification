@@ -103,12 +103,12 @@ for i in range(len(folders)):
 
     accu = 0
     mcc = 0
-    f = np.array([0.0 for cl in range(nb_class)])
-    rec = np.array([0.0 for cl in range(nb_class)])
-    pres = np.array([0.0 for cl in range(nb_class)])
-    g = np.array([0.0 for cl in range(nb_class)])
-    l = np.array([])
-    vl = np.array([])
+    f = np.zeros(nb_class)
+    rec = np.zeros(nb_class)
+    pres = np.zeros(nb_class)
+    g = np.zeros(nb_class)
+    l = np.zeros(1500)
+    vl = np.zeros(1500)
 
     for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg, histo = raw_data(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
@@ -136,12 +136,12 @@ for i in range(len(folders)):
 
     accu = 0
     mcc = 0
-    f = np.array([0.0 for cl in range(nb_class)])
-    rec = np.array([0.0 for cl in range(nb_class)])
-    pres = np.array([0.0 for cl in range(nb_class)])
-    g = np.array([0.0 for cl in range(nb_class)])
-    l = np.array([])
-    vl = np.array([])
+    f = np.zeros(nb_class)
+    rec = np.zeros(nb_class)
+    pres = np.zeros(nb_class)
+    g = np.zeros(nb_class)
+    l = np.zeros(1500)
+    vl = np.zeros(1500)
 
 
     for i in range(int(nb_iter)):
@@ -169,12 +169,12 @@ for i in range(len(folders)):
     #Jittering
     accu = 0
     mcc = 0
-    f = np.array([0.0 for cl in range(nb_class)])
-    rec = np.array([0.0 for cl in range(nb_class)])
-    pres = np.array([0.0 for cl in range(nb_class)])
-    g = np.array([0.0 for cl in range(nb_class)])
-    l = np.array([])
-    vl = np.array([])
+    f = np.zeros(nb_class)
+    rec = np.zeros(nb_class)
+    pres = np.zeros(nb_class)
+    g = np.zeros(nb_class)
+    l = np.zeros(1500)
+    vl = np.zeros(1500)
 
     for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg, histo = jitter_test(dataset, x_train, y_train,x_val, y_val, x_test, np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
@@ -202,12 +202,12 @@ for i in range(len(folders)):
 
     accu = 0
     mcc = 0
-    f = np.array([0.0 for cl in range(nb_class)])
-    rec = np.array([0.0 for cl in range(nb_class)])
-    pres = np.array([0.0 for cl in range(nb_class)])
-    g = np.array([0.0 for cl in range(nb_class)])
-    l = np.array([])
-    vl = np.array([])
+    f = np.zeros(nb_class)
+    rec = np.zeros(nb_class)
+    pres = np.zeros(nb_class)
+    g = np.zeros(nb_class)
+    l = np.zeros(1500)
+    vl = np.zeros(1500)
 
     for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg, histo = tw_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
@@ -235,12 +235,12 @@ for i in range(len(folders)):
     #SMOTE
     accu = 0
     mcc = 0
-    f = np.array([0.0 for cl in range(nb_class)])
-    rec = np.array([0.0 for cl in range(nb_class)])
-    pres = np.array([0.0 for cl in range(nb_class)])
-    g = np.array([0.0 for cl in range(nb_class)])
-    l = np.array([])
-    vl = np.array([])
+    f = np.zeros(nb_class)
+    rec = np.zeros(nb_class)
+    pres = np.zeros(nb_class)
+    g = np.zeros(nb_class)
+    l = np.zeros(1500)
+    vl = np.zeros(1500)
 
     for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg, histo = SMOTE_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
@@ -268,12 +268,12 @@ for i in range(len(folders)):
     #ADASYN
     accu = 0
     mcc = 0
-    f = np.array([0.0 for cl in range(nb_class)])
-    rec = np.array([0.0 for cl in range(nb_class)])
-    pres = np.array([0.0 for cl in range(nb_class)])
-    g = np.array([0.0 for cl in range(nb_class)])
-    l = np.array([])
-    vl = np.array([])
+    f = np.zeros(nb_class)
+    rec = np.zeros(nb_class)
+    pres = np.zeros(nb_class)
+    g = np.zeros(nb_class)
+    l = np.zeros(1500)
+    vl = np.zeros(1500)
 
     for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg, histo = ADASYN_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
