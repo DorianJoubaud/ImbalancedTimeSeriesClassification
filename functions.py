@@ -170,7 +170,7 @@ def jitter_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_s
     oversamp_labels = to_categorical( class_offset(oversamp_labels, dataset), nb_classes)
     model = RESNET('resnet/Jitter/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    model.comile(dataset, 'Jittering')
+    model.compile(dataset, 'Jittering')
 
     histo = model.fit(oversamp, oversamp_labels, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
 
