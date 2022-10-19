@@ -31,7 +31,7 @@ gm = list()
 presi = list()
 reca = list()
 
-
+#ee
 nb_iter = 1.0
 
 
@@ -120,8 +120,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
-        l += histo.history['loss']
-        vl += histo.history['val_loss']
+        l += histo[0].history['loss']
+        vl += histo[0].history['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -154,8 +154,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
-        l += histo.history['loss']
-        vl += histo.history['val_loss']
+        l += histo[0].history['loss']
+        vl += histo[0].history['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -186,8 +186,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
-        l += histo.history['loss']
-        vl += histo.history['val_loss']
+        l += histo[0].history['loss']
+        vl += histo[0].history['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -219,8 +219,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
-        l += histo.history['loss']
-        vl += histo.history['val_loss']
+        l += histo[0].history['loss']
+        vl += histo[0].history['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -252,8 +252,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
-        l += histo.history['loss']
-        vl += histo.history['val_loss']
+        l += histo[0].history['loss']
+        vl += histo[0].history['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
@@ -285,8 +285,8 @@ for i in range(len(folders)):
         rec += trec
         pres += tpres
         g += tg
-        l += histo.history['loss']
-        vl += histo.history['val_loss']
+        l += histo[0].history['loss']
+        vl += histo[0].history['val_loss']
 
     evolutionf.append(f/nb_iter) # f1 scores
     evolutiong.append(g/nb_iter) #g means
