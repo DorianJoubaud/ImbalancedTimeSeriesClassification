@@ -78,7 +78,7 @@ def raw_data(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     rec = recall_score(y_test, y_pred, average=None).tolist()
     pres = precision_score(y_test, y_pred, average=None).tolist()
     g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-    return accu, mcc, f, rec, pres, g, histo
+    return accu, mcc, f, rec, pres, g
 
 
 def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes, sp_str='all'):
@@ -102,7 +102,7 @@ def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     rec = recall_score(y_test, y_pred, average=None).tolist()
     pres = precision_score(y_test, y_pred, average=None).tolist()
     g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-    return accu, mcc, f, rec, pres, g, histo
+    return accu, mcc, f, rec, pres, g
 
 
 
@@ -184,7 +184,7 @@ def jitter_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_s
     rec = recall_score(y_test, y_pred, average=None).tolist()
     pres = precision_score(y_test, y_pred, average=None).tolist()
     g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-    return accu, mcc, f, rec, pres, g, histo
+    return accu, mcc, f, rec, pres, g
 
 def tw_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes,sp_str):
     def Augmentation(function, data, label_data, class_under, nb):
@@ -269,20 +269,20 @@ def tw_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape
     rec = recall_score(y_test, y_pred, average=None).tolist()
     pres = precision_score(y_test, y_pred, average=None).tolist()
     g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-    return accu, mcc, f, rec, pres, g, histo
+    return accu, mcc, f, rec, pres, g
 
 
 
 def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes, sp_st='all'):
-     oversample = SMOTE(k_neighbors=1, sampling_strategy=sp_st)
+     oversample = SMOTE(k_neighbors=2, sampling_strategy=sp_st)
      try:
         Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
      except:
         try:
-            oversample = SMOTE(k_neighbors=2)
+            oversample = SMOTE(k_neighbors=1)
             Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
         except:
-            return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),[0]
+            return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),[0,0]
 
 
 
@@ -299,7 +299,7 @@ def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_sh
      rec = recall_score(y_test, y_pred, average=None).tolist()
      pres = precision_score(y_test, y_pred, average=None).tolist()
      g = geometric_mean_score(y_test, y_pred, average=None).tolist()
-     return accu, mcc, f, rec, pres, g,histo
+     return accu, mcc, f, rec, pres, g
 
 def ADASYN_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes, sp_str = 'all'):
      oversample = ADASYN(sampling_strategy=sp_str)
