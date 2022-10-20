@@ -45,7 +45,7 @@ for i in range(len(folders)):
     print(f'{i}/{len(folders)}')
 
     nb_class = nb_classes(dataset)
-    nb_dims = nb_dims(dataset)
+    nb_dims = 1
 
 
 

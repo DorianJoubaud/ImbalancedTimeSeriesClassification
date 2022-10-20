@@ -14,10 +14,10 @@ def get_data(dataset, deli):
       return x_train, x_test, y_train, y_test
 
 
-def nb_dims(dataset):
+""" def nb_dims(dataset):
     if dataset in ["unipen1a", "unipen1b", "unipen1c"]:
         return 2
-    return 1
+    return 1 """
 
 def nb_classes(dataset):
     if dataset == "unipen1a":
