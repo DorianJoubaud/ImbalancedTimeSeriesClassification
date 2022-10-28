@@ -20,7 +20,7 @@ bench = list()
 #balance = pd.read_csv('balance_measure.csv') #We use Shanon Entropy as reference
 
 folders = os.listdir('data')
-folders = ['Phoneme']
+folders = ['OliveOil','Phoneme']
 
 
 
