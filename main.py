@@ -111,7 +111,7 @@ for i in range(len(folders)):
 
     for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg   = raw_data(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class)
-        print(tf.shape)
+        print(len(tf))
         print(tf)
 
         accu += taccu
@@ -147,7 +147,7 @@ for i in range(len(folders)):
 
     for i in range(int(nb_iter)):
         taccu,tmcc, tf, trec, tpres, tg   = ROS_test(dataset, x_train, y_train,x_val, y_val, x_test,  np.argmax(y_test, axis = 1), input_shape,  nb_class, sp_str)
-        print(tf.shape)
+        print(len(tf))
         print(tf)
         accu += taccu
         mcc += tmcc
