@@ -97,6 +97,7 @@ def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     y_pred = model.predict(x_test)
 
     f = f1_score(y_test, y_pred, average = None).tolist()
+    print(f)
     accu = accuracy_score(y_test, y_pred)
     mcc = matthews_corrcoef(y_test, y_pred)
     rec = recall_score(y_test, y_pred, average=None).tolist()
