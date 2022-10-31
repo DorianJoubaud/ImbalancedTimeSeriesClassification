@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/DorianJoubaud/ImbalancedTimeSeriesClassification">
-    <img src="images/resnet.png" alt="Logo" width="100" height="80">
+    <img src="images/resnet.png" alt="Logo" width="500" height="250">
   </a>
 
 <h3 align="center">Imbalanced Time Series Classification</h3>
