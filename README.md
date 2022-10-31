@@ -37,11 +37,11 @@
 <h3 align="center">Imbalanced Time Series Classification</h3>
 
   <p align="center">
-    Data augmentation aims to create synthetic data from real data, and is widely used in machine learning, especially for classification tasks. In fact, recent deep learning algorithms largely surpass what was done in the past. However, these results rely on a large amount of training data and are very sensitive to imbalanced data, which can lead to overfitting
+    $Data augmentation aims to create synthetic data from real data, and is widely used in machine learning, especially for classification tasks. In fact, recent deep learning algorithms largely surpass what was done in the past. However, these results rely on a large amount of training data and are very sensitive to imbalanced data, which can lead to overfitting
 . It is often impossible to create balanced datasets from real data. Indeed, we find this problematic in applications such as medical diagnosis with prediction of rare but important diseases or failure detection in manufacturing.\\
 Different data augmentation techniques are proposed in the literature, which can be categorized in two categories: (i) basic data augmentation techniques such as Random Oversampling or SMOTE; and (ii) advanced data augmentation techniques such as generative models or others learning methods.
 Although advanced data augmentation techniques are increasingly studied, basic data augmentation techniques remain largely used due to their ease of use as well as their speed. To the best of our knowledge, no research studies has ever analyzed to what extent a given technique is efficient in order to balance datasets depending on the initial datasets imbalancement.
-This paper proposes to carry out such an analysis with with well-known techniques for Imbalanced Time Series Classification (ITSC): Random Oversampling, Jittering, Time Warping, SMOTE and ADASYN.
+This paper proposes to carry out such an analysis with with well-known techniques for Imbalanced Time Series Classification (ITSC): Random Oversampling, Jittering, Time Warping, SMOTE and ADASYN.$
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
