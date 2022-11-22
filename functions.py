@@ -83,12 +83,14 @@ def raw_data(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
 
 def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes, sp_str='all'):
     #Don t forget to put y train & y test to categorical
+    if sp_str != 'all':
+        nb_data_add = np.sum(sp_str) - np.max(sp_str) - 2 * (len(sp_str) - 1) # Get the number of data added
 
     oversample = RandomOverSampler(sampling_strategy=sp_str)
     X_over, y_over = oversample.fit_resample(x_train[:,:,0], y_train)
     model = RESNET('resnet/ROS/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    model.compile(dataset, 'ROS')
+    model.compile(dataset, 'ROS', nb_data_add)
     y_over = to_categorical( class_offset(y_over, dataset), nb_classes)
     histo = model.fit(X_over, y_over, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
 
@@ -97,7 +99,7 @@ def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
     y_pred = model.predict(x_test)
 
     f = f1_score(y_test, y_pred, average = None).tolist()
-    print(f)
+    
     accu = accuracy_score(y_test, y_pred)
     mcc = matthews_corrcoef(y_test, y_pred)
     rec = recall_score(y_test, y_pred, average=None).tolist()
@@ -111,6 +113,7 @@ def ROS_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shap
 
 
 def jitter_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes,sp_str):
+    nb_data_add = np.sum(sp_str) - np.max(sp_str) - 2 * (len(sp_str) - 1) # Get the number of data added
 
     def Augmentation(function, data, label_data, class_under, nb):
       underReprClass = list()
@@ -171,7 +174,7 @@ def jitter_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_s
     oversamp_labels = to_categorical( class_offset(oversamp_labels, dataset), nb_classes)
     model = RESNET('resnet/Jitter/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    model.compile(dataset, 'Jittering')
+    model.compile(dataset, 'Jittering', nb_data_add)
 
     histo = model.fit(oversamp, oversamp_labels, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
 
@@ -188,6 +191,7 @@ def jitter_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_s
     return accu, mcc, f, rec, pres, g
 
 def tw_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes,sp_str):
+    nb_data_add = np.sum(sp_str) - np.max(sp_str) - 2 * (len(sp_str) - 1) # Get the number of data added
     def Augmentation(function, data, label_data, class_under, nb):
       underReprClass = list()
       idxs = np.where((label_data == class_under))[0]
@@ -257,7 +261,7 @@ def tw_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape
     oversamp_labels = to_categorical( class_offset(oversamp_labels, dataset), nb_classes)
     model = RESNET('resnet/TW/', input_shape, nb_classes, False)
     model.build_model(input_shape, nb_classes)
-    model.compile(dataset, 'TW')
+    model.compile(dataset, 'TW', nb_data_add)
     histo = model.fit(oversamp, oversamp_labels, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
 
 
@@ -275,12 +279,14 @@ def tw_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape
 
 
 def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes, sp_st='all'):
+     if sp_str != 'all':
+        nb_data_add = np.sum(sp_str) - np.max(sp_str) - 2 * (len(sp_str) - 1) # Get the number of data added
      oversample = SMOTE(k_neighbors=2, sampling_strategy=sp_st)
      try:
         Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
      except:
         try:
-            oversample = SMOTE(k_neighbors=1)
+            oversample = SMOTE(k_neighbors=1, sampling_strategy=sp_st)
             Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
         except:
             return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes)
@@ -290,7 +296,7 @@ def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_sh
      model = RESNET('resnet/SMOTE', input_shape, nb_classes, False)
      model.build_model(input_shape, nb_classes)
      y_over = to_categorical( class_offset(yo, dataset), nb_classes)
-     model.compile(dataset, 'SMOTE')
+     model.compile(dataset, 'SMOTE', nb_data_add)
      histo = model.fit(Xo,y_over, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
      y_pred = model.predict(x_test)
 
@@ -303,13 +309,15 @@ def SMOTE_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_sh
      return accu, mcc, f, rec, pres, g
 
 def ADASYN_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_shape, nb_classes, sp_str = 'all'):
+     if sp_str != 'all':
+        nb_data_add = np.sum(sp_str) - np.max(sp_str) - 2 * (len(sp_str) - 1) # Get the number of data added
      oversample = ADASYN(sampling_strategy=sp_str)
      try:
          Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
      except:
          print("ADASYN not possible, using SMOTE instead")
          try:
-            oversample = SMOTE(k_neighbors=1)
+            oversample = SMOTE(k_neighbors=1, sampling_strategy=sp_st)
             Xo, yo = oversample.fit_resample(x_train[:,:,0], y_train)
          except:
             return 0,0, np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes),np.zeros(nb_classes)
@@ -322,7 +330,7 @@ def ADASYN_test(dataset, x_train, y_train, x_val, y_val, x_test, y_test, input_s
      model = RESNET('resnet/ADASYN/', input_shape, nb_classes, False)
      model.build_model(input_shape, nb_classes)
      y_over = to_categorical( class_offset(yo, dataset), nb_classes)
-     model.compile(dataset, 'ADASYN')
+     model.compile(dataset, 'ADASYN', nb_data_add)
      histo = model.fit(Xo,y_over, x_val, to_categorical( class_offset(y_val, dataset), nb_classes))
      y_pred = model.predict(x_test)
 

@@ -130,7 +130,7 @@ class RESNET:
 
 
 
-  def compile(self, dataset, technique):
+  def compile(self, dataset, technique, supp ='0'):
 
 
         self.model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(0.001),
@@ -147,8 +147,8 @@ class RESNET:
         print('=== Compiled ===')
 
         wandb.login(key="89972c25af0c49a4e2e1b8663778daedd960634a")
-        wandb.init(project="ImbalanceClassification", entity="djbd")
-        wandb.run.name = f'Classification{dataset}  - {technique}'
+        wandb.init(project="iterative_imbalance_classification_TS", entity="djbd")
+        wandb.run.name = f'Classification {dataset}  - {technique} - {supp}'
         self.callbacks = [ reduce_lr,WandbCallback()]
 
         print('=== Connected to wandb ===')
